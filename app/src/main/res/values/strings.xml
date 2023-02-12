@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Assignment OCBC</string>
+    <string name="button_register_text">REGISTER</string>
+    <string name="button_login_text">LOGIN</string>
+    <string name="logout">Logout</string>
+    <string name="make_transfer">Make Transfer</string>
+    <string name="transfer_now">Transfer Now</string>
+    <string name="username">Username</string>
+    <string name="username_alert">Username is required</string>
+    <string name="password">Password</string>
+    <string name="password_alert">Password is required</string>
+    <string name="confirm_password_alert">Confirm password not match</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="you_have">You have</string>
+    <string name="account_number">Account Number</string>
+    <string name="accountholder">AccountHolder</string>
+    <string name="your_transaction_history">Your transaction history</string>
+    <string name="register">Register</string>
+
+</resources>

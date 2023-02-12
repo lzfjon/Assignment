@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    tools:context=".DashboardActivity">
+
+    <TextView
+        android:id="@+id/textLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/logout_marginTop"
+        android:layout_marginEnd="@dimen/general_margin"
+        android:text="@string/logout"
+        android:textColor="@color/black"
+        android:textSize="@dimen/logout_textSize"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/general_margin"
+        android:layout_marginTop="@dimen/general_margin"
+        app:layout_constraintBottom_toTopOf="@+id/buttonMakeTransfer"
+        app:layout_constraintTop_toBottomOf="@id/textLogout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/dashboard_shape">
+
+                <TextView
+                    android:id="@+id/dbTextYouHave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dashboard_margin"
+                    android:layout_marginTop="@dimen/dashboard_margin"
+                    android:text="@string/you_have"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/dashbdTotalAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dashboard_margin"
+                    android:layout_marginTop="@dimen/margin_betweenTextView"
+                    android:textColor="@color/black"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dbTextYouHave"
+                    tools:text="SGD 21,421.33" />
+
+                <TextView
+                    android:id="@+id/dbTextAccountNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dashboard_margin"
+                    android:layout_marginTop="@dimen/margin_betweenTextView"
+                    android:text="@string/account_number"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dashbdTotalAmount" />
+
+                <TextView
+                    android:id="@+id/dbUserAccountNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dashboard_margin"
+                    android:layout_marginTop="@dimen/margin_betweenTextView"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dbTextAccountNumber"
+                    tools:text="3213-321-9923" />
+
+                <TextView
+                    android:id="@+id/dbTextAccountHolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dashboard_margin"
+                    android:layout_marginTop="@dimen/margin_betweenTextView"
+                    android:text="@string/accountholder"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dbUserAccountNumber" />
+
+                <TextView
+                    android:id="@+id/dbNameAccountHolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dashboard_margin"
+                    android:layout_marginTop="@dimen/margin_betweenTextView"
+                    android:layout_marginBottom="@dimen/dashboard_margin"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dbTextAccountHolder"
+                    tools:text="Donald Trump" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/transactionHistoryTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/transactionCard_margin"
+                android:text="@string/your_transaction_history"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dateRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/transactionCard_margin"
+                android:layout_marginEnd="@dimen/transactionCard_margin"
+                tools:listitem="@layout/transaction_card" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/buttonMakeTransfer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/button_marginStart"
+        android:layout_marginEnd="@dimen/button_marginEnd"
+        android:layout_marginBottom="@dimen/button_marginButton"
+        android:background="@drawable/button_shape"
+        android:text="@string/make_transfer"
+        app:backgroundTint="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

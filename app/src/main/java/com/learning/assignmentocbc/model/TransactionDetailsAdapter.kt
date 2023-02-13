@@ -1,6 +1,7 @@
 package com.learning.assignmentocbc.model
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,12 @@ class TransactionDetailsAdapter(
         holder.detailAccountHolder.text = transactionDetailsList[position][1]
         holder.detailAccountNo.text = transactionDetailsList[position][2]
         holder.detailAmount.text = transactionDetailsList[position][3]
+
+        if(holder.detailAmount.text.contains("-")){
+            holder.detailAmount.setTextColor(Color.RED)
+        }
+
+
 
     }
 }

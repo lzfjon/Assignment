@@ -16,6 +16,7 @@ import com.learning.assignmentocbc.model.*
 import com.learning.assignmentocbc.network.createApiService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 
 
 class DashboardActivity : AppCompatActivity() {
@@ -72,7 +73,7 @@ class DashboardActivity : AppCompatActivity() {
 
             //get balance information
             val balanceResponse = createApiService().getBalanceDetails(token).body()
-            accountBalance.postValue(balanceResponse?.balance.toString())
+            accountBalance.postValue(checkMoneyFormat(balanceResponse?.balance.toString()))
 
             //get Api Transaction Details
             val transactionResponse = createApiService().getTransactionDetails(token).body()
@@ -146,10 +147,29 @@ class DashboardActivity : AppCompatActivity() {
 
             val dateString = td.transactionDate.toString()
             val transactionDate = convertDateIntoFormat(dateString)
-            val transactToName = td.transactionReceipient?.accountHolder.toString()
-            val transactToAccountNo = td.transactionReceipient?.accountNo.toString()
-            val transactAmount = td.transactionAmount.toString()
-            var transactionHistoryDetails : ArrayList<String> = arrayListOf(transactionDate,transactToName,transactToAccountNo,transactAmount)
+            var transactToName: String? = null
+            var transactToAccountNo: String? = null
+            var transactAmount = checkMoneyFormat(td.transactionAmount.toString())
+
+
+            Log.d("Dashboard Activity", "transactAmount = $transactAmount")
+
+            td.transactionReceipient?.accountHolder?.let{
+                transactToName = td.transactionReceipient?.accountHolder
+                transactToAccountNo = td.transactionReceipient?.accountNo
+                transactAmount = "- $transactAmount"
+                Log.d("Dashboard Activity", "transact to name in let =$transactToName")
+
+            } ?: run {
+                transactToName = td.sender?.accountHolder
+                transactToAccountNo = td.sender?.accountNo
+                Log.d("Dashboard Activity", "transact to name in run =$transactToName")
+            }
+
+
+
+
+            var transactionHistoryDetails : ArrayList<String> = arrayListOf(transactionDate,transactToName.toString(),transactToAccountNo.toString(),transactAmount)
 
             if(!transactionHistoryMap.contains(transactionDate)){
                 transactionHistoryMap[transactionDate] = arrayListOf(transactionHistoryDetails)
@@ -169,5 +189,24 @@ class DashboardActivity : AppCompatActivity() {
         val dateYear = dateString.subSequence(dateString.length-5,dateString.length)
         return "$dateDay $dateMonth $dateYear"
 
+    }
+
+
+    fun checkMoneyFormat(amount:String) : String{
+
+        val amountLength = amount.length
+        if (amount.contains(".")){
+
+            if(amountLength-amount.indexOf(".")==3){
+                return amount
+            }
+
+            if(amountLength-amount.indexOf(".")==2){
+                return amount+"0"
+            }
+
+        }
+
+        return "$amount.00"
     }
 }

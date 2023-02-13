@@ -24,7 +24,12 @@ interface ApiService {
     suspend fun getBalanceDetails(@Header("Authorization") token: String): Response<AccountBalance>
 
     @POST("transfer")
-    suspend fun postTransfer(@Header("Authorization") token: String, @Body tansferInfo: TransferRequest):Response<TransferResponse>
+    suspend fun postTransfer(@Header("Authorization") token: String, @Body transferInfo: TransferRequest):Response<TransferResponse>
+
+//    @POST("register")
+//    suspend fun postRegister(@Body registerInfo: ArrayList<String> ): Response<ArrayList<String>>
+    @POST("register")
+    suspend fun postRegister(@Body registerRequest : RegisterRequest ): Response<RegisterResponse>
 
 
 

@@ -45,10 +45,12 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/registerPassword"
+            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/input_border"
             android:hint="@string/password" />
+        <!--            android:inputType="textPassword"-->
 
         <TextView
             android:id="@+id/registerPasswordAlert"
@@ -73,6 +75,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/registerConfirmPassword"
+            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/input_border"

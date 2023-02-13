@@ -22,7 +22,9 @@ data class TransactionDetails(
     @SerializedName("description")
     val transactionDescription : String? = null,
     @SerializedName("receipient")
-    val transactionReceipient : Receipent? = null
+    val transactionReceipient : Receipent? = null,
+    val sender : Receipent? = null
+
 ) : Serializable{
 }
 

@@ -129,44 +129,4 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-
-
-//    fun loginAction(loginRequest: LoginRequest,intentDashboard :Intent){
-//
-//        val call = createApiService().postLoginRequest(loginRequest)
-//
-//        call.enqueue(object : Callback<LoginResponse>{
-//            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-//
-//                if(response.isSuccessful){
-//                    val loginResponseBody = response.body()
-//                    Log.d("Login Activity",loginResponseBody.toString())
-//                    Log.d("Login Activity",loginResponseBody?.token.toString())
-//
-//                    intentDashboard.putExtra("accountNo",loginResponseBody?.accountNo.toString())
-//                    intentDashboard.putExtra("username",loginResponseBody?.username.toString())
-//                    intentDashboard.putExtra("token",loginResponseBody?.token.toString())
-//                    Log.d("Login Activity", "intent saved")
-//
-//                }
-//
-//            }
-//
-//            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-//                Toast.makeText(applicationContext
-//                    ,t.localizedMessage
-//                    ,Toast.LENGTH_LONG).show()
-//            }
-//
-//
-//        })
-//
-//
-//    }
-
-
-
-
-
-
 }

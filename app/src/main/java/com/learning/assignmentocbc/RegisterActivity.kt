@@ -12,6 +12,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.learning.assignmentocbc.model.RegisterRequest
 import com.learning.assignmentocbc.network.createApiService
 import kotlinx.coroutines.GlobalScope
@@ -28,6 +30,8 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var confirmRegisterPassword : EditText
     lateinit var confirmPasswordAlert : TextView
 
+    lateinit var registerError : TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -38,7 +42,8 @@ class RegisterActivity : AppCompatActivity() {
         registerPassword = findViewById(R.id.registerPassword)
         confirmRegisterPassword = findViewById(R.id.registerConfirmPassword)
         confirmPasswordAlert = findViewById(R.id.registerConfirmPasswordAlert)
-        confirmPasswordAlert.visibility=View.GONE
+//        confirmPasswordAlert.visibility=View.GONE
+        registerError = findViewById(R.id.registerErrMsg)
 
         registerPassword.addTextChangedListener( object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -77,10 +82,13 @@ class RegisterActivity : AppCompatActivity() {
         fromRegisterToLogin.setOnClickListener {
             val registerUsername = registerUsername.text.toString()
             val registerPassword = registerPassword.text.toString()
+            val confirmRegisterPassword = confirmRegisterPassword.text.toString()
+
             val registerRequest = RegisterRequest(registerUsername,registerPassword)
-
-
+            val failedRegister = MutableLiveData<String>()
             var intentRegisterConfirm = Intent(this@RegisterActivity,DashboardActivity::class.java)
+
+
 
             GlobalScope.launch {
 
@@ -88,21 +96,28 @@ class RegisterActivity : AppCompatActivity() {
                 val response = createApiService().postRegister(registerRequest)
                 Log.d("Register Activity", "response = $response")
 
+                failedRegister.postValue(response.toString())
+
                 if(response.code()!=200){
                     Log.d("Register Activity", "response = "+response.code())
+
 
                 } else{
                     val requestResponse = response.body()
                     Log.d("Register Activity", requestResponse.toString())
                     token = requestResponse?.token.toString();
 
+                    intentRegisterConfirm.putExtra("token", token)
+                    intentRegisterConfirm.putExtra("username",registerUsername)
+                    startActivity(intentRegisterConfirm)
 
                 }
-
-                intentRegisterConfirm.putExtra("token", token)
-                startActivity(intentRegisterConfirm)
-
             }
+
+            failedRegister.observe(this@RegisterActivity, Observer {
+
+                registerError.visibility = View.VISIBLE
+            })
 
 
         }

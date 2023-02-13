@@ -27,12 +27,10 @@ class DashboardActivity : AppCompatActivity() {
     lateinit var dashbdTotalAmount : TextView
     lateinit var dashbdAccountNo : TextView
     lateinit var dashbdAccountHolder : TextView
-//
-//    lateinit var transactionHistoryCard : TextView
+
     lateinit var transactionHistoryRecyclerView : RecyclerView
     lateinit var transactionHistoryAdapter : TransactionHistoryAdapter
 
-//    lateinit var transactionDetailsList : List<TransactionDetails>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +56,7 @@ class DashboardActivity : AppCompatActivity() {
 
 
         val accountBalance = MutableLiveData<String>()
-//        val transactionHistoryList = MutableLiveData<ArrayList<ArrayList<String>>>()
+        val dashboardAccountNo = MutableLiveData<String>()
         val transactionHistoryMap = MutableLiveData<
                 MutableMap<String,
                         ArrayList<
@@ -74,6 +72,9 @@ class DashboardActivity : AppCompatActivity() {
             //get balance information
             val balanceResponse = createApiService().getBalanceDetails(token).body()
             accountBalance.postValue(checkMoneyFormat(balanceResponse?.balance.toString()))
+
+            //get account number information
+            dashboardAccountNo.postValue(balanceResponse?.accountNo.toString())
 
             //get Api Transaction Details
             val transactionResponse = createApiService().getTransactionDetails(token).body()
@@ -92,6 +93,10 @@ class DashboardActivity : AppCompatActivity() {
                 append("SGD ")
                 append(it.toString())
             }
+        })
+
+        dashboardAccountNo.observe(this@DashboardActivity, Observer {
+            dashbdAccountNo.text = it
         })
 
 
@@ -183,7 +188,7 @@ class DashboardActivity : AppCompatActivity() {
         return transactionHistoryMap
     }
 
-    fun convertDateIntoFormat(dateString: String) : String{
+    private fun convertDateIntoFormat(dateString: String) : String{
         val dateMonth = dateString.subSequence(3,7)
         val dateDay = dateString.subSequence(8,10)
         val dateYear = dateString.subSequence(dateString.length-5,dateString.length)
@@ -192,7 +197,7 @@ class DashboardActivity : AppCompatActivity() {
     }
 
 
-    fun checkMoneyFormat(amount:String) : String{
+    private fun checkMoneyFormat(amount:String) : String{
 
         val amountLength = amount.length
         if (amount.contains(".")){

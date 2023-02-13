@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/input_border"
             android:hint="@string/password" />
-        <!--            android:inputType="textPassword"-->
+
 
         <TextView
             android:id="@+id/registerPasswordAlert"
@@ -85,7 +85,7 @@
             android:id="@+id/registerConfirmPasswordAlert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:visibility="gone"
             android:layout_weight="1"
             android:text="@string/confirm_password_alert"
             android:textColor="@color/design_default_color_error" />
@@ -114,6 +114,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_arrow_back"
         />
+
+    <TextView
+        android:id="@+id/registerErrMsg"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="@dimen/button_marginStart"
+        android:layout_marginEnd="@dimen/button_marginEnd"
+        android:layout_marginBottom="@dimen/margin_between_button"
+        android:background="@drawable/error_shape"
+        android:gravity="center"
+        android:text="Invalid Username/Password"
+        android:textColor="@color/design_default_color_error"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/buttonRegisterConfirm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonRegisterConfirm"

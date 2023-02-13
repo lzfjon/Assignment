@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.learning.assignmentocbc.model.*
 import com.learning.assignmentocbc.network.ApiService
 import com.learning.assignmentocbc.network.createApiService
@@ -37,6 +40,8 @@ class LoginActivity : AppCompatActivity() {
     lateinit var alertUsername : TextView
     lateinit var alertPassword: TextView
 
+    lateinit var errorMessage : TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +53,9 @@ class LoginActivity : AppCompatActivity() {
         alertPassword = findViewById(R.id.loginPasswordAlert)
         val oriAlertUsername = alertUsername.text
         val oriAlertPassword = alertPassword.text
+
+        errorMessage= findViewById(R.id.loginErrMsg)
+
 
 
         fromLoginToDashboard= findViewById(R.id.buttonLogin)
@@ -96,9 +104,13 @@ class LoginActivity : AppCompatActivity() {
             val passwordInput : String = loginPassword.text.toString()
             val loginRequest = LoginRequest(usernameInput,passwordInput)
 
+            val failedLogin = MutableLiveData<String>()
+
             GlobalScope.launch {
                 val response = createApiService().postLoginRequest(loginRequest)
                 val loginResponse = response.body()
+
+                failedLogin.postValue(loginResponse?.status.toString())
 
                 if(loginResponse?.status == "success"){
 
@@ -114,11 +126,15 @@ class LoginActivity : AppCompatActivity() {
                     intentDashboard.putExtra("accountNo",accountNo)
 
                     startActivity(intentDashboard)
-
-
                 }
-
             }
+
+            failedLogin.observe(this@LoginActivity, Observer {
+
+
+                    errorMessage.visibility=View.VISIBLE
+
+            })
         }
 
         fromLoginToRegister.setOnClickListener{

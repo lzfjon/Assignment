@@ -131,8 +131,10 @@ class LoginActivity : AppCompatActivity() {
 
             failedLogin.observe(this@LoginActivity, Observer {
 
+                    if(it!="success"){
+                        errorMessage.visibility=View.VISIBLE
+                    }
 
-                    errorMessage.visibility=View.VISIBLE
 
             })
         }

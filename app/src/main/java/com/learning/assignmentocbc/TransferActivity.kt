@@ -42,8 +42,6 @@ class TransferActivity : AppCompatActivity() {
         val accountNo = intent?.getStringExtra("accountNo")
         Log.d("Transfer Act On Create",token)
 
-
-//        val payeeList = MutableLiveData<ArrayList<String>>()
         val payeeMap = MutableLiveData<MutableMap<String,String>>()
         GlobalScope.launch {
 
@@ -51,25 +49,15 @@ class TransferActivity : AppCompatActivity() {
             val payeeResponse = createApiService().getPayeesDetails(token).body()
             val payeeDetails = payeeResponse?.data
             Log.d("Transfer Activity",payeeDetails.toString())
-//            val payeeListInfo = arrayListOf<String>()
             val payeeMapInfo = mutableMapOf<String,String>()
 
             for(pd in payeeDetails!!){
-//                payeeListInfo.add(pd.payeeName!!)
                 payeeMapInfo[pd.payeeName!!] = pd.accountNumber!!
             }
-//            Log.d("Transfer Activity",payeeList.toString())
             Log.d("Transfer Activity",payeeMapInfo.toString())
-//            payeeList.postValue(payeeListInfo)
             payeeMap.postValue(payeeMapInfo)
         }
 
-//        payeeList.observe(this@TransferActivity, Observer {
-//            val payeeAdapter = ArrayAdapter(this@TransferActivity, android.R.layout.simple_spinner_item, it)
-//
-//            payeeOption.adapter = payeeAdapter
-//            payeeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//        })
 
         payeeMap.observe(this@TransferActivity, Observer {
             val nameList = arrayListOf<String>()

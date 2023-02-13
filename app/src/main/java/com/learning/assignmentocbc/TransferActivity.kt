@@ -91,21 +91,6 @@ class TransferActivity : AppCompatActivity() {
             var intentTransferNow = Intent(this@TransferActivity,DashboardActivity::class.java)
 
             //selection of map
-//            lateinit var selectedPayeeAccountNo : String
-//
-//            payeeOption.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-//                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//                    val selectedItem = parent?.getItemAtPosition(position)
-//                    val mapSelection = payeeMap.value
-//                    val selectedPayeeAccountNo  = mapSelection?.get(selectedItem).toString()
-//
-//                }
-//
-//                override fun onNothingSelected(parent: AdapterView<*>?) {
-//
-//                }
-//
-//            }
 
             val selectedPayeeAccountNo : String = payeeMap.value?.get(payeeOption.selectedItem.toString())
                 .toString()

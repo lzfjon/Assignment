@@ -79,15 +79,6 @@ class DashboardActivity : AppCompatActivity() {
             val transactionDetails = transactionResponse?.data
             Log.d("Dashboard Activity",transactionDetails.toString())
 
-//            val dateString = getDateString(transactionDetails)
-//            Log.d("Dashboard Activity", "dateString = $dateString")
-//            dateList.postValue(dateString)
-
-//            val historyList = getHistoryList(transactionDetails)
-//            transactionHistoryList.postValue(historyList)
-//            Log.d("Dashboard Activity", "historyList = $historyList")
-
-
             val historyMap = getHistoryMap(transactionDetails)
             transactionHistoryMap.postValue(historyMap)
             Log.d("Dashboard Activity", "historyMap = $historyMap")
@@ -119,10 +110,6 @@ class DashboardActivity : AppCompatActivity() {
             Log.d("Dashboard Activity", "dateString = $dateString")
 
             val detailSet = it.values.first()
-//            val detailList = arrayListOf<ArrayList<String>>()
-//            for(dl in detailSet){
-//                detailList.add(dl)
-//            }
 
             transactionHistoryAdapter = TransactionHistoryAdapter(
                 dateString,
@@ -130,16 +117,6 @@ class DashboardActivity : AppCompatActivity() {
             )
             transactionHistoryRecyclerView.adapter=transactionHistoryAdapter
         })
-
-
-
-//        transactionHistoryList.observe(this@DashboardActivity, Observer {
-//            val dateString = getDateString(it)
-//            transactionHistoryAdapter = TransactionHistoryAdapter(dateString,this@DashboardActivity)
-//
-//            transactionHistoryRecyclerView.adapter=transactionHistoryAdapter
-//        })
-
 
 
         //make transfer button
@@ -185,50 +162,6 @@ class DashboardActivity : AppCompatActivity() {
         Log.d("Dashboard Activity", "Map = $transactionHistoryMap")
         return transactionHistoryMap
     }
-
-
-
-    fun getHistoryList(transactionDetails: List<TransactionDetails>?) : ArrayList<ArrayList<String>>{
-
-        var transactionHistoryDateList : ArrayList<ArrayList<String>> = arrayListOf()
-
-        for(td in transactionDetails!!){
-
-            val dateString = td.transactionDate.toString()
-            val transactionDate = convertDateIntoFormat(dateString)
-            val transactToName = td.transactionReceipient?.accountHolder.toString()
-            val transactToAccountNo = td.transactionReceipient?.accountNo.toString()
-            val transactAmount = td.transactionAmount.toString()
-            var transactionHistoryDetails : ArrayList<String> = arrayListOf(transactionDate,transactToName,transactToAccountNo,transactAmount)
-
-            transactionHistoryDateList.add(transactionHistoryDetails)
-
-        }
-        return transactionHistoryDateList
-    }
-
-
-    fun getDateString(transactionHistoryList: ArrayList<ArrayList<String>>) : ArrayList<String>{
-
-        var transactionHistoryDateList : ArrayList<String> = arrayListOf()
-
-        val listSize = transactionHistoryList.size
-        for(i in 0 until transactionHistoryList.size){
-
-            val dateDashboard = transactionHistoryList[i][0]
-
-
-            if(!transactionHistoryDateList.contains(dateDashboard)){
-
-                transactionHistoryDateList.add(dateDashboard)
-
-                Log.d("Db Act", "transactionHistoryDataList = $dateDashboard")
-            }
-        }
-        Log.d("Db Act", "transactionHistoryDataList = $transactionHistoryDateList")
-        return transactionHistoryDateList
-    }
-
 
     fun convertDateIntoFormat(dateString: String) : String{
         val dateMonth = dateString.subSequence(3,7)

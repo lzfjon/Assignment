@@ -22,6 +22,7 @@ class TransferActivity : AppCompatActivity() {
     lateinit var payeeOption : Spinner
     lateinit var editAmount : EditText
     lateinit var editDescription: EditText
+    lateinit var transferError : TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,11 +36,14 @@ class TransferActivity : AppCompatActivity() {
         editAmount = findViewById(R.id.editAmount)
         editDescription = findViewById(R.id.editDescription)
 
+        transferError = findViewById(R.id.transferError)
+
 
         //get token
         val token = intent?.getStringExtra("token").toString()
         val accountHolder = intent?.getStringExtra("username")
         val accountNo = intent?.getStringExtra("accountNo")
+        val accountBalance = intent?.getStringExtra("balance")
         Log.d("Transfer Act On Create",token)
 
         val payeeMap = MutableLiveData<MutableMap<String,String>>()
@@ -80,31 +84,35 @@ class TransferActivity : AppCompatActivity() {
 
             //selection of map
 
-            val selectedPayeeAccountNo : String = payeeMap.value?.get(payeeOption.selectedItem.toString())
-                .toString()
+            val selectedPayeeAccountNo : String = payeeMap.value?.get(payeeOption.selectedItem.toString()).toString()
             val amountInput  = editAmount.text.toString()
             val descriptionInput : String = editDescription.text.toString()
             val transferRequest = TransferRequest(selectedPayeeAccountNo,amountInput.toDouble(),descriptionInput)
 
-            GlobalScope.launch {
-                Log.d("TransferActivity", "transferRequest = $transferRequest")
-                val response = createApiService().postTransfer(token,transferRequest)
-                val transferResponse = response.body()
+            if(amountInput.toDouble()-accountBalance!!.toDouble()>0){
+                transferError.visibility=View.VISIBLE
+            } else {
 
-                Log.d("TransferActivity","transfer response = " + transferResponse.toString())
-                if(transferResponse?.status == "success"){
-                    Log.d("Transfer Activity", "successful")
+                GlobalScope.launch {
+                    Log.d("TransferActivity", "transferRequest = $transferRequest")
+                    val response = createApiService().postTransfer(token, transferRequest)
+                    val transferResponse = response.body()
+
+                    Log.d("TransferActivity", "transfer response = " + transferResponse.toString())
+                    if (transferResponse?.status == "success") {
+                        Log.d("Transfer Activity", "successful")
+                    }
+
+                    Log.d("Transfer Activity", "PayeeAccount = $selectedPayeeAccountNo")
+                    Log.d("Transfer Activity", "amountInput = $amountInput")
+                    Log.d("Transfer Activity", "descriptionInput = $descriptionInput")
                 }
 
-                Log.d("Transfer Activity","PayeeAccount = $selectedPayeeAccountNo")
-                Log.d("Transfer Activity","amountInput = $amountInput")
-                Log.d("Transfer Activity","descriptionInput = $descriptionInput")
+                intentTransferNow.putExtra("token", token)
+                intentTransferNow.putExtra("accountNo", accountNo)
+                intentTransferNow.putExtra("username", accountHolder)
+                startActivity(intentTransferNow)
             }
-
-            intentTransferNow.putExtra("token",token)
-            intentTransferNow.putExtra("accountNo",accountNo)
-            intentTransferNow.putExtra("username",accountHolder)
-            startActivity(intentTransferNow)
         }
 
         transferBack.setOnClickListener {

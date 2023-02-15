@@ -1,7 +1,6 @@
 package com.learning.assignmentocbc
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,21 +9,14 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import com.learning.assignmentocbc.model.*
-import com.learning.assignmentocbc.network.ApiService
+import com.learning.assignmentocbc.model.LoginRequest
 import com.learning.assignmentocbc.network.createApiService
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.math.log
 
 
 const val BASE_URL = "https://green-thumb-64168.uc.r.appspot.com/"
@@ -32,17 +24,18 @@ const val BASE_URL = "https://green-thumb-64168.uc.r.appspot.com/"
 class LoginActivity : AppCompatActivity() {
 
 
-    lateinit var fromLoginToDashboard: Button
-    lateinit var fromLoginToRegister : Button
-    lateinit var loginUsername : EditText
-    lateinit var loginPassword : EditText
+    private lateinit var fromLoginToDashboard: Button
+    private lateinit var fromLoginToRegister : Button
+    private lateinit var loginUsername : EditText
+    private lateinit var loginPassword : EditText
 
     lateinit var alertUsername : TextView
     lateinit var alertPassword: TextView
 
-    lateinit var errorMessage : TextView
+    private lateinit var errorMessage : TextView
 
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -56,10 +49,11 @@ class LoginActivity : AppCompatActivity() {
 
         errorMessage= findViewById(R.id.loginErrMsg)
 
-
-
         fromLoginToDashboard= findViewById(R.id.buttonLogin)
         fromLoginToRegister = findViewById(R.id.buttonRegister)
+
+
+
 
 
         loginUsername.addTextChangedListener (object: TextWatcher{
@@ -69,6 +63,10 @@ class LoginActivity : AppCompatActivity() {
                     alertUsername.text = ""
                 }else{
                     alertUsername.text = oriAlertUsername
+                }
+
+                if(errorMessage.visibility == View.VISIBLE){
+                    errorMessage.visibility = View.GONE
                 }
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -82,9 +80,13 @@ class LoginActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
 
                 if(s.toString().isNotEmpty()){
-                    alertPassword.text = ""
+                    alertPassword.text =""
                 }else{
                     alertPassword.text = oriAlertPassword
+                }
+
+                if(errorMessage.visibility == View.VISIBLE){
+                    errorMessage.visibility = View.GONE
                 }
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -129,14 +131,14 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
-            failedLogin.observe(this@LoginActivity, Observer {
+            failedLogin.observe(this@LoginActivity) {
 
-                    if(it!="success"){
-                        errorMessage.visibility=View.VISIBLE
-                    }
+                if (it != "success") {
+                    errorMessage.visibility = View.VISIBLE
+                }
 
 
-            })
+            }
         }
 
         fromLoginToRegister.setOnClickListener{
@@ -144,6 +146,18 @@ class LoginActivity : AppCompatActivity() {
             val intentRegister = Intent(this@LoginActivity,RegisterActivity::class.java)
             startActivity(intentRegister)
 
+        }
+    }
+
+    fun errorMessageVisibilityCheck(s: Editable?){
+        if(s.toString().isNotEmpty()){
+            alertPassword.visibility =View.GONE
+        }else{
+            alertPassword.visibility = View.VISIBLE
+        }
+
+        if(errorMessage.visibility == View.VISIBLE){
+            errorMessage.visibility = View.GONE
         }
     }
 

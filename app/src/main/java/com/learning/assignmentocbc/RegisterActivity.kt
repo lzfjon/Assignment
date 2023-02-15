@@ -42,16 +42,13 @@ class RegisterActivity : AppCompatActivity() {
         registerPassword = findViewById(R.id.registerPassword)
         confirmRegisterPassword = findViewById(R.id.registerConfirmPassword)
         confirmPasswordAlert = findViewById(R.id.registerConfirmPasswordAlert)
-//        confirmPasswordAlert.visibility=View.GONE
         registerError = findViewById(R.id.registerErrMsg)
 
         registerPassword.addTextChangedListener( object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
             }
 
             override fun afterTextChanged(s: Editable?) {

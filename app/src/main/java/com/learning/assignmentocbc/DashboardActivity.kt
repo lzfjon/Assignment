@@ -65,8 +65,6 @@ class DashboardActivity : AppCompatActivity() {
                         >
                 >()
 
-
-
         GlobalScope.launch {
 
             //get balance information
@@ -88,16 +86,16 @@ class DashboardActivity : AppCompatActivity() {
 
         dashbdTotalAmount = findViewById(R.id.dashbdTotalAmount)
 
-        accountBalance.observe(this@DashboardActivity, Observer {
+        accountBalance.observe(this@DashboardActivity) {
             dashbdTotalAmount.text = buildString {
                 append("SGD ")
                 append(it.toString())
             }
-        })
+        }
 
-        dashboardAccountNo.observe(this@DashboardActivity, Observer {
+        dashboardAccountNo.observe(this@DashboardActivity) {
             dashbdAccountNo.text = it
-        })
+        }
 
 
         //transaction history
@@ -128,17 +126,18 @@ class DashboardActivity : AppCompatActivity() {
         //make transfer button
         fromDashboardToTransfer.setOnClickListener {
 
-            var intentMakeTransfer = Intent(this@DashboardActivity,TransferActivity::class.java)
+            val intentMakeTransfer = Intent(this@DashboardActivity,TransferActivity::class.java)
             intentMakeTransfer.putExtra("token",token)
             intentMakeTransfer.putExtra("accountNo",accountNo)
             intentMakeTransfer.putExtra("username",accountHolder)
+            intentMakeTransfer.putExtra("balance",accountBalance.value)
             startActivity(intentMakeTransfer)
         }
 
         //logout button
         logout.setOnClickListener {
 
-            var intentLogout = Intent(this@DashboardActivity,LoginActivity::class.java)
+            val intentLogout = Intent(this@DashboardActivity,LoginActivity::class.java)
 
             startActivity(intentLogout)
         }
@@ -147,7 +146,7 @@ class DashboardActivity : AppCompatActivity() {
 
     fun getHistoryMap(transactionDetails: List<TransactionDetails>?) : MutableMap<String,ArrayList<ArrayList<String>>>{
 
-        var transactionHistoryMap: MutableMap<String,ArrayList<ArrayList<String>>> = mutableMapOf()
+        val transactionHistoryMap: MutableMap<String,ArrayList<ArrayList<String>>> = mutableMapOf()
         for(td in transactionDetails!!) {
 
             val dateString = td.transactionDate.toString()
@@ -174,12 +173,12 @@ class DashboardActivity : AppCompatActivity() {
 
 
 
-            var transactionHistoryDetails : ArrayList<String> = arrayListOf(transactionDate,transactToName.toString(),transactToAccountNo.toString(),transactAmount)
+            val transactionHistoryDetails : ArrayList<String> = arrayListOf(transactionDate,transactToName.toString(),transactToAccountNo.toString(),transactAmount)
 
             if(!transactionHistoryMap.contains(transactionDate)){
                 transactionHistoryMap[transactionDate] = arrayListOf(transactionHistoryDetails)
             } else{
-                var tempList = transactionHistoryMap[transactionDate]
+                val tempList = transactionHistoryMap[transactionDate]
                 tempList!!.add(transactionHistoryDetails)
                 transactionHistoryMap[transactionDate] = tempList
             }

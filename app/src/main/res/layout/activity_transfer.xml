@@ -124,7 +124,24 @@
             android:gravity="start|top"
             android:inputType="textMultiLine"
             android:lines="5" />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/transferError"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/error_shape"
+        android:gravity="center"
+        android:text="Not enough balance in account"
+        android:textColor="@color/design_default_color_error"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/buttonTransferNow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonTransferNow"
